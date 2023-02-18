@@ -148,10 +148,16 @@ if (NOT MSVC)
     #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-math-errno -ffinite-math-only -funsafe-math-optimizations")
 endif()
 
+
 message(STATUS "CMAKE_SYSTEM_PROCESSOR: ${CMAKE_SYSTEM_PROCESSOR}")
 
-if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm" OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64")
+if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm" OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64"  OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "ARM64")
     message(STATUS "ARM detected")
+    if(MSVC AND ${CMAKE_SYSTEM_PROCESSOR} MATCHES "ARM64")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /arch:ARM64")
+        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /arch:ARM64")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /arch:ARM64")
+    endif()
 else()
     message(STATUS "x86 detected")
     if (MSVC)
